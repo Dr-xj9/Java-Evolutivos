@@ -5,17 +5,24 @@ class Horario{
 	private String salon;
 	private Profesor profesor;
 	private int horas;
+	private String materia;
 	
-	public Horario(String salonArg, Profesor profesorArg, int horasArgs){
+	public Horario(String salonArg, Profesor profesorArg, int horasArgs, String materiaArg){
 		this.salon=salonArg;
-		this.profesorArg=profesorArg;
+		this.profesor=profesorArg;
 		this.horas=horasArgs;
+		this.materia=materiaArg;
 	}
+	
+	public String getMateria(){
+		return this.materia;
+	}
+	
 	public String getSalon(){
 		return this.salon;
 	}
 	public Profesor getProfesor(){
-		return this.profesores;
+		return this.profesor;
 	}
 	public int getHoras(){
 		return this.horas;
@@ -55,20 +62,59 @@ public class AlgoritmoEvolutivo {
 			List<Horario> nodo = cruzar(seleccionados);
 			mutar(nodo);
 			reemplazarMuestra(nodo);
+			System.out.println("Miku");
 		}
-		Horario mejorHorario = getMejorHorario();
+		//Horario mejorHorario = getMejorHorario();
 		// Imprimir el mejor horario
-		System.out.println("Mejor horario: " + mejorHorario);
+		//System.out.println("Mejor horario: " + mejorHorario);
 	}
+	/*public Horario getMejorHorario(){
+		return this.muestra[0];
+	}
+	*/
+	
 	private void inicializarMuestra() {
+		Profesor p;
+		Scanner scanner = new Scanner(System.in);
 		for (int i = 0; i < tamanoMuestra; i++) {
-			Horario horario = new Horario(); // Generar un horario aleatorio
+			
+			System.out.println("Salon: ");
+			String salon = scanner.nextLine();
+			
+			System.out.println("Nombre Profesor: ");
+			String nombre = scanner.nextLine();
+			
+			System.out.println("Prioridad: ");
+			int prioridad = scanner.nextInt();
+			
+			p = new Profesor(nombre, prioridad);
+			
+			System.out.println("Horas: ");
+			int horas = scanner.nextInt();
+			
+			System.out.println("Materia: ");
+			String materia = scanner.nextLine();
+			
+			Horario horario = new Horario(salon, p, horas, materia); // Generar un horario aleatorio
 			muestra.add(horario);
 		}
 	}
+	
 	private List<Horario> seleccionar() {
 		// Implementar horarios basada en aptitud
+		Random rand = new Random();
+		List<Horario> seleccionados = new ArrayList();
+		
+		for(int i=0; i<tamanoMuestra; i++){
+			if(rand.nextInt(2) == 1){
+				seleccionados.add(this.muestra[i]);
+			}
+		}
+		
+		return seleccionados;
+		
 	}
+	
 	private List<Horario> cruzar(List<Horario> seleccionados) {
 		List<Horario> nodo = new ArrayList<>();
 		System.out.println("AQUI CRUZAMOS NODOS");
@@ -82,11 +128,15 @@ public class AlgoritmoEvolutivo {
 		muestra.clear();
 		muestra.addAll(nodo);
 	}
+	/*
 	private Horario getMejorHorario() {
 		// obtención del mejor horario
 		System.out.println("MEJOR-HORARIO");
 	}
+	*/
 	public static void main(String[] args){
+		
+		AlgoritmoEvolutivo aev;
 		Scanner scanner = new Scanner(System.in);
 		
 		System.out.println("Tamaño de la muestra: ");
@@ -95,8 +145,8 @@ public class AlgoritmoEvolutivo {
 		System.out.println("Numero de generaciones: ");
 		int gen = scanner.nextInt();
 		
-		AlgoritmoEvolutivo(tam, gen);
-		ejecutar();
+		aev = new AlgoritmoEvolutivo(tam, gen);
+		aev.ejecutar();
 	
 	}
 }
